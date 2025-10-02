@@ -4,13 +4,13 @@
 """
 Batch inference for pytorch-PCN.
 
-- Recorre un directorio con imágenes y corre PCN.
-- Dibuja la OBB en la imagen original (carpeta: <output_dir>/images)
-- Guarda predicciones en txt (carpeta: <output_dir>/labels), una línea por detección:
+- Iterates through a directory with images and runs PCN.
+- Draws the OBB on the original image (folder: <output_dir>/images)
+- Saves predictions in txt files (folder: <output_dir>/labels), one line per detection:
     x1 y1 x2 y2 angle score
-  (x1, y1, x2, y2 en pixeles de la imagen original; angle en grados; score en [0,1])
+  (x1, y1, x2, y2 in pixels of the original image; angle in degrees; score in [0,1])
 
-Ejemplo:
+Example:
     python inference_pcn.py \
         --source ./some_images \
         --output_dir ./predictions_pcn \
