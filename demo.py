@@ -16,13 +16,15 @@ def step_by_step(imgpath):
 def one_line_show(imgpath):
     pcn.show(imgpath)
 
+
 def one_line_show_crop(imgpath):
     pcn.show(imgpath, is_crop=True)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # usage settings
     import sys
+
     if len(sys.argv) != 2:
         print("Usage: python3 pcn.py path/to/img")
         sys.exit()

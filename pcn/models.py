@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-
 class PCN1(nn.Module):
 
     def __init__(self):
@@ -25,6 +24,7 @@ class PCN1(nn.Module):
         rotate = F.softmax(self.rotate(x), dim=1)
         bbox = self.bbox(x)
         return cls_prob, rotate, bbox
+
 
 # caffe output for data shape
 # data                        	 (1, 3, 24, 24)
@@ -50,6 +50,7 @@ class PCN1(nn.Module):
 # fc6_1                       	 (2, 128, 1, 1) (2,)
 # bbox_reg_1                  	 (3, 128, 1, 1) (3,)
 
+
 class PCN2(nn.Module):
 
     def __init__(self):
@@ -57,7 +58,7 @@ class PCN2(nn.Module):
         self.conv1 = nn.Conv2d(3, 20, kernel_size=3, stride=1)
         self.conv2 = nn.Conv2d(20, 40, kernel_size=3, stride=1)
         self.conv3 = nn.Conv2d(40, 70, kernel_size=2, stride=1)
-        self.fc = nn.Linear(70*3*3, 140)
+        self.fc = nn.Linear(70 * 3 * 3, 140)
         self.rotate = nn.Linear(140, 3)
         self.cls_prob = nn.Linear(140, 2)
         self.bbox = nn.Linear(140, 3)
@@ -78,6 +79,7 @@ class PCN2(nn.Module):
         rotate = F.softmax(self.rotate(x), dim=1)
         bbox = self.bbox(x)
         return cls_prob, rotate, bbox
+
 
 # caffe output for data shape
 # data                        	 (1, 3, 24, 24)
@@ -114,13 +116,12 @@ class PCN3(nn.Module):
         self.conv2 = nn.Conv2d(24, 48, kernel_size=3, stride=1)
         self.conv3 = nn.Conv2d(48, 96, kernel_size=3, stride=1)
         self.conv4 = nn.Conv2d(96, 144, kernel_size=2, stride=1)
-        self.fc = nn.Linear(144*3*3, 192)
+        self.fc = nn.Linear(144 * 3 * 3, 192)
         self.cls_prob = nn.Linear(192, 2)
         self.bbox = nn.Linear(192, 3)
         self.rotate = nn.Linear(192, 1)
         self.mp1 = nn.MaxPool2d(kernel_size=3, stride=2)
         self.mp2 = nn.MaxPool2d(kernel_size=2, stride=2)
-
 
     def forward(self, x):
         batch_size = x.size(0)
@@ -141,6 +142,7 @@ class PCN3(nn.Module):
         rotate = self.rotate(x)
         bbox = self.bbox(x)
         return cls_prob, rotate, bbox
+
 
 # caffe output for data shape
 # data                        	 (1, 3, 48, 48)
@@ -174,10 +176,11 @@ class PCN3(nn.Module):
 import os
 from os.path import join as pjoin
 
+
 def load_model():
     cwd = os.path.dirname(__file__)
     pcn1, pcn2, pcn3 = PCN1(), PCN2(), PCN3()
-    pcn1.load_state_dict(torch.load(pjoin(cwd, 'pth/pcn1_sd.pth')))
-    pcn2.load_state_dict(torch.load(pjoin(cwd, 'pth/pcn2_sd.pth')))
-    pcn3.load_state_dict(torch.load(pjoin(cwd, 'pth/pcn3_sd.pth')))
+    pcn1.load_state_dict(torch.load(pjoin(cwd, "pth/pcn1_sd.pth")))
+    pcn2.load_state_dict(torch.load(pjoin(cwd, "pth/pcn2_sd.pth")))
+    pcn3.load_state_dict(torch.load(pjoin(cwd, "pth/pcn3_sd.pth")))
     return pcn1, pcn2, pcn3
