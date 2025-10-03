@@ -4,7 +4,6 @@ import torch.nn.functional as F
 
 
 class PCN1(nn.Module):
-
     def __init__(self):
         super().__init__()
         self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=2, dilation=1)
@@ -52,7 +51,6 @@ class PCN1(nn.Module):
 
 
 class PCN2(nn.Module):
-
     def __init__(self):
         super().__init__()
         self.conv1 = nn.Conv2d(3, 20, kernel_size=3, stride=1)
@@ -73,7 +71,7 @@ class PCN2(nn.Module):
         x = F.pad(x, (0, 1, 0, 1))
         x = F.relu(self.mp(x), inplace=True)
         x = F.relu(self.conv3(x), inplace=True)
-        x = x.view(batch_size, -1)
+        x = x.reshape(batch_size, -1)
         x = F.relu(self.fc(x), inplace=True)
         cls_prob = F.softmax(self.cls_prob(x), dim=1)
         rotate = F.softmax(self.rotate(x), dim=1)
@@ -109,7 +107,6 @@ class PCN2(nn.Module):
 
 
 class PCN3(nn.Module):
-
     def __init__(self):
         super().__init__()
         self.conv1 = nn.Conv2d(3, 24, kernel_size=3, stride=1)
@@ -136,7 +133,7 @@ class PCN3(nn.Module):
         x = self.conv3(x)
         x = F.relu(self.mp2(x), inplace=True)
         x = F.relu(self.conv4(x), inplace=True)
-        x = x.view(batch_size, -1)
+        x = x.reshape(batch_size, -1)
         x = F.relu(self.fc(x), inplace=True)
         cls_prob = F.softmax(self.cls_prob(x), dim=1)
         rotate = self.rotate(x)
